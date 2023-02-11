@@ -4,14 +4,13 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @Table(name="book")
 @Entity(name="Book")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
@@ -49,9 +48,10 @@ public class Book {
     @Column( name="stars")
     Long stars;
 
-    @ManyToOne(
-            fetch = FetchType.LAZY
-    )
+    @ManyToOne
+//            (
+//            fetch = FetchType.LAZY
+//    )
     @JoinColumn(
             name="user_id",
             referencedColumnName = "id",
@@ -61,8 +61,14 @@ public class Book {
     @JsonBackReference
     private Student student;
 
-
-
-
-
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", price=" + price +
+                ", stars=" + stars +
+                '}';
+    }
 }

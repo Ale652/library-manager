@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
@@ -16,7 +13,8 @@ import java.util.List;
 
 @Table(name="student")
 @Entity(name="Student")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
@@ -56,13 +54,22 @@ public class Student {
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER
     )
-    @JsonManagedReference
+//    @JsonManagedReference
     List<Book> books= new ArrayList<>();
 
     public void addBook(Book book){
-
         this.books.add(book);
         book.setStudent(this);
     }
 
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", secondName='" + secondName + '\'' +
+                ", email='" + email + '\'' +
+                ", age=" + age +
+                '}';
+    }
 }

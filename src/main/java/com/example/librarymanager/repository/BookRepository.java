@@ -17,7 +17,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
 
     @Query("select b from Book b where  b.price > ?1 and b.author = ?2 ")
-    Optional<List<Book>> findAllBooksWithLowerPriceAndAuthor(double price , String author);
+    Optional<List<Book>> findAllBooksGraterPriceThanMentionedOfSpecificAuthor(double price , String author);
 
     @Query("select  b from Book b where  b.price = (select  min(a.price) from  Book  a)")
     Optional<Book> findLowerPriceBook();

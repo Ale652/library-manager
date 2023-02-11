@@ -1,7 +1,6 @@
 package com.example.librarymanager;
 
 import com.example.librarymanager.models.Book;
-import com.example.librarymanager.models.Exemplu;
 import com.example.librarymanager.models.Student;
 import com.example.librarymanager.repository.BookRepository;
 import com.example.librarymanager.repository.StudentRepository;
@@ -9,7 +8,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 
@@ -22,14 +20,14 @@ public class LibraryManagerApplication {
 
 
     @Bean
-    CommandLineRunner comand(BookRepository bookRepository, Exemplu exemplu, StudentRepository studentRepository) {
+    CommandLineRunner asdasdsa(BookRepository bookRepository, StudentRepository studentRepository) {
         return  args->{
 //            bookRepository.findAll().forEach(e->{
 //
 //                System.out.println(e);
 //            });
 
-//            bookRepository.findAllBooksWithLowerPriceAndAuthor(15.8709393,"Maryanne Say")
+//            bookRepository.findAllBooksGraterPriceThanMentionedOfSpecificAuthor(15,"Daryle Kelbie")
 //                    .get().forEach(System.out::println);
 
 //            System.out.println("############### findLowerPriceBook :");
@@ -47,18 +45,44 @@ public class LibraryManagerApplication {
             Student student = studentRepository.findById(1L).get();
 
 
-//
-//            for(int i=0;i<100;i++){
-//
-//                student.addBook(
-//                        Book.builder().author("sad"+i).price(12).title("asdasdas").stars(12l).build()
-//                );
-//            }
-//
-//            studentRepository.saveAndFlush(student);
+
+            for(int i=0;i<10;i++){
+
+                student.addBook(
+                        Book.builder().author("sad"+i).price(12).title("asdasdas").stars(12l).build()
+                );
+            }
+
+            studentRepository.saveAndFlush(student);
 
 
-            student.getBooks().forEach(System.out::println);
+//            student.getBooks().forEach(System.out::println);
+            // 1. get student with most books
+//            studentRepository.findMaxBooksOfStudent().get().forEach(System.out::println);
+
+            // 2. findAllStudenstAgedMoreThan25
+//            System.out.println("findAllStudenstAgedMoreThan25");
+//            studentRepository.findAllStudenstAgedMoreThan25().get().forEach(System.out::println);
+//
+//            // 3. findLowerAgeStudent
+//            System.out.println("findLowerAgeStudent");
+//            studentRepository.findLowerAgeStudent().get().forEach(System.out::println);
+//
+//            // 4. findHigherAgeStudent
+//            System.out.println("findHigherAgeStudent");
+//            studentRepository.findHigherAgeStudent().get().forEach(System.out::println);
+//
+//            // 5. selectStudentWithMaxBooks
+////            System.out.println("selectStudentWithMaxBooks");
+////            studentRepository.selectStudentWithMaxBooks(PageRequest.of(1, 1)).forEach(System.out::println);
+//
+//            // 6. findLower10AgedStudent
+//            System.out.println("findLower10AgedStudent");
+//            studentRepository.findLower10AgedStudent(PageRequest.of(1, 10)).forEach(System.out::println);
+
+
+
+
 
 
         };
