@@ -1,5 +1,6 @@
 package com.example.librarymanager;
 
+import com.example.librarymanager.dto.AddEnrollementRequest;
 import com.example.librarymanager.models.Book;
 import com.example.librarymanager.models.Course;
 import com.example.librarymanager.models.Enrolment;
@@ -26,7 +27,7 @@ public class LibraryManagerApplication {
 
     @Bean
     CommandLineRunner asdasdsa(BookRepository bookRepository, StudentRepository studentRepository
-                                , CourseRepository courseRepository, StudentService studentService) {
+                                , CourseRepository courseRepository, StudentService studentService, StudentService enrolStudentToCourse) {
         return  args->{
 
             // Book Queries
@@ -121,6 +122,8 @@ public class LibraryManagerApplication {
 //            System.out.println("getAllStudents \n");
 //            studentService.getAllStudents().forEach(System.out::println);
 
+            AddEnrollementRequest addEnrollementRequest = new AddEnrollementRequest(1, 2);
+            enrolStudentToCourse.enrolStudentToCourse(addEnrollementRequest);
 
         };
     }

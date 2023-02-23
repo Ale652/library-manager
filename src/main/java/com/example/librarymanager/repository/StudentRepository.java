@@ -35,4 +35,5 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     @Query("select s from Student s order by s.age asc")
     Page<Student> findLower10AgedStudent(Pageable pageable);
+
 }

@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Table(name = "enrolment")
@@ -42,8 +44,7 @@ public class Enrolment {
     @JsonBackReference
     private Course course;
 
-    @NotNull
-    LocalDateTime created_at;
+    LocalDate created_at;
 
     @Override
     public String toString() {
@@ -53,5 +54,17 @@ public class Enrolment {
                 ", course=" + course.getName() +
                 ", created_at=" + created_at +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        Enrolment compareEnrollment = (Enrolment)obj;
+        return compareEnrollment.getStudent().getId() == this.getStudent().getId() && compareEnrollment.getCourse().getId() == this.getCourse().getId();
+    }
+
+    public Enrolment(Student student, Course course){
+        this.student = student;
+        this.course = course;
+        this.created_at=LocalDate.now();
     }
 }

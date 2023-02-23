@@ -72,7 +72,6 @@ public class Student {
     }
 
 
-
     public void addEnrolment(Enrolment enrolment){
         this.enrolments.add(enrolment);
         enrolment.setStudent(this);
