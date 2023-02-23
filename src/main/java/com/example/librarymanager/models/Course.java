@@ -1,5 +1,6 @@
 package com.example.librarymanager.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -48,6 +49,7 @@ public class Course {
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER
     )
+    @JsonManagedReference
     List<Enrolment> enrolments = new ArrayList<>();
 
     public void addEnrolment(Enrolment enrolment){

@@ -52,10 +52,25 @@
             <version>2.14.0</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+
+
 
     </dependencies>
 
-    <build>
+    <build><!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui -->
+
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

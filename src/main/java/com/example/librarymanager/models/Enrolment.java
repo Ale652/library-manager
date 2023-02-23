@@ -1,5 +1,6 @@
 package com.example.librarymanager.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -33,10 +34,12 @@ public class Enrolment {
 
     @ManyToOne
     @JoinColumn(name = "id_student")
+    @JsonBackReference
     private Student student;
 
     @ManyToOne
     @JoinColumn(name = "id_course")
+    @JsonBackReference
     private Course course;
 
     @NotNull
