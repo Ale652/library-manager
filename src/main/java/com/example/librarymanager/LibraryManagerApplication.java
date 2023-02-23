@@ -7,12 +7,12 @@ import com.example.librarymanager.models.Student;
 import com.example.librarymanager.repository.BookRepository;
 import com.example.librarymanager.repository.CourseRepository;
 import com.example.librarymanager.repository.StudentRepository;
+import com.example.librarymanager.services.StudentService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.PageRequest;
-
 import java.time.LocalDateTime;
 
 
@@ -26,7 +26,7 @@ public class LibraryManagerApplication {
 
     @Bean
     CommandLineRunner asdasdsa(BookRepository bookRepository, StudentRepository studentRepository
-                                , CourseRepository courseRepository) {
+                                , CourseRepository courseRepository, StudentService studentService) {
         return  args->{
 
             // Book Queries
@@ -51,8 +51,9 @@ public class LibraryManagerApplication {
 //            bookRepository.bestBooks().get().forEach(System.out::println);
 
 
-            Student student = studentRepository.findById(1L).get();
-            Course course = courseRepository.findById(1L).get();
+//            Student student = studentRepository.findById(1L).get();
+//            Course course = courseRepository.findById(1L).get();
+
 
 
 //            for(int i=0;i<10;i++){
@@ -83,8 +84,8 @@ public class LibraryManagerApplication {
 //            studentRepository.findHigherAgeStudent().get().forEach(System.out::println);
 //
 //            // 5. selectStudentWithMaxBooks
-////            System.out.println("selectStudentWithMaxBooks");
-////            studentRepository.selectStudentWithMaxBooks(PageRequest.of(1, 1)).forEach(System.out::println);
+//            System.out.println("selectStudentWithMaxBooks");
+//            studentRepository.selectStudentWithMaxBooks(PageRequest.of(1, 1)).forEach(System.out::println);
 //
 //            // 6. findLower10AgedStudent
 //            System.out.println("findLower10AgedStudent");
@@ -95,23 +96,31 @@ public class LibraryManagerApplication {
             // Course Queries
 
             // 1. getFirst10CoursesOrderByepartmentAsc
-            System.out.println("getFirst10CoursesOrderByepartmentAsc: ");
-            courseRepository.getFirst10CoursesOrderByepartmentAsc(PageRequest.of(1, 10))
-                    .get().forEach(System.out::println);
+//            System.out.println("getFirst10CoursesOrderByepartmentAsc: ");
+//            courseRepository.getFirst10CoursesOrderByepartmentAsc(PageRequest.of(1, 10))
+//                    .get().forEach(System.out::println);
+//
+//
+//            Enrolment build = Enrolment.builder().
+//                    created_at(LocalDateTime.of(2023, 6, 30, 12, 00)).build();
+//            student.addEnrolment(build);
+//            course.addEnrolment(build);
+//
+//
+//            studentRepository.saveAndFlush(student);
+////          courseRepository.saveAndFlush(course);
+//
+//            System.out.println("Get list of enrolments for course_id : ");
+//            courseRepository.getListOfEnrolmentsForACourse(course.getId()).get().
+//                    forEach(System.out::println);
+//
+//            System.out.println("selectStudentWithMaxBooks");
+//            studentRepository.selectStudentWithMaxBooks()
+//                    .get().forEach(System.out::println);
 
+//            System.out.println("getAllStudents \n");
+//            studentService.getAllStudents().forEach(System.out::println);
 
-            Enrolment build = Enrolment.builder().
-                    created_at(LocalDateTime.of(2023, 6, 30, 12, 00)).build();
-            student.addEnrolment(build);
-            course.addEnrolment(build);
-
-
-            studentRepository.saveAndFlush(student);
-//          courseRepository.saveAndFlush(course);
-
-            System.out.println("Get list of enrolments for course_id : ");
-            courseRepository.getListOfEnrolmentsForACourse(course.getId()).get().
-                    forEach(System.out::println);
 
         };
     }

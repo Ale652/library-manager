@@ -20,14 +20,17 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     Optional<List<Student>> findAllStudenstAgedMoreThan25();
 
 
-    @Query("select s from Student s where s.age = (select  min(s.age) from  Student  a)")
-    Optional<List<Student>> findLowerAgeStudent();
+    @Query("select concat(s.firstName,' ',s.secondName,' ',s.age) from Student s where s.age = (select  min(a.age) from  Student  a)")
+    Optional<List<String>> findLowerAgeStudent();
 
-    @Query("select s from Student s where s.age = (select  max(s.age) from  Student  a)")
-    Optional<List<Student>> findHigherAgeStudent();
+    @Query("select concat(s.firstName,' ',s.secondName,' ',s.age) from Student s where s.age = (select  max(a.age) from  Student  a)")
+    Optional<List<String>> findHigherAgeStudent();
 
-//    @Query("select s from Student s where s.books.size = (select max(s1.books.size) from Student s1)")
-//    Page<List<Student>> selectStudentWithMaxBooks(Pageable pageable);
+    @Query(value = "select first_name ,count(*) as number from student " +
+            "join book on book.user_id = student.id " +
+            "group by first_name  order by  number desc  limit 1  "
+            , nativeQuery = true)
+    Optional<List<String>> selectStudentWithMaxBooks();
 
 
     @Query("select s from Student s order by s.age asc")

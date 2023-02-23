@@ -54,7 +54,7 @@ public class Student {
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER
     )
-//    @JsonManagedReference
+    @JsonManagedReference
     List<Book> books= new ArrayList<>();
 
     @OneToMany(
@@ -62,6 +62,8 @@ public class Student {
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER
     )
+
+    @JsonManagedReference
     List<Enrolment> enrolments = new ArrayList<>();
 
     public void addBook(Book book){
