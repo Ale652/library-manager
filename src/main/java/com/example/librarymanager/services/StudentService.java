@@ -1,6 +1,8 @@
 package com.example.librarymanager.services;
 
 import com.example.librarymanager.dto.AddEnrollementRequest;
+import com.example.librarymanager.dto.EnrollementInterface;
+import com.example.librarymanager.dto.RemoveEnrollmentRequest;
 import com.example.librarymanager.exceptions.CourseNotPresentException;
 import com.example.librarymanager.exceptions.EmptyDatabaseExeception;
 import com.example.librarymanager.exceptions.StudentAlreadyEnrolledException;
@@ -11,7 +13,6 @@ import com.example.librarymanager.models.Student;
 import com.example.librarymanager.repository.CourseRepository;
 import com.example.librarymanager.repository.EnrollementRepository;
 import com.example.librarymanager.repository.StudentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,6 +53,7 @@ public class StudentService {
 
             throw new EmptyDatabaseExeception("No student with max books.");
         }
+        
         return studentWithMaxBooks.get().stream().map(s -> s).collect(Collectors.joining());
     }
 
@@ -90,24 +92,11 @@ public class StudentService {
     @Modifying
     public void enrolStudentToCourse(AddEnrollementRequest addEnrollementRequest) {
         //tratam prima oara logica pentru exceptii
-        // vf existenta studentului
-        Optional<Student> student = studentRepository.findById(addEnrollementRequest.getIdStudent().longValue());
-        if (student.isEmpty()) {
-            throw new StudentNotPresentException("This student is not preset !");
-        }
-
-        // vf existenta cursului
-        Optional<Course> course = courseRepository.findById(addEnrollementRequest.getIdCourse().longValue());
-
-        if (course.isEmpty()) {
-            throw new CourseNotPresentException("This ocurse is not present !");
-        }
-
-
-
+        Optional<Student> student = getStudentIfPresent(addEnrollementRequest);
+        Optional<Course> course = getCourseIfPresent(addEnrollementRequest);
         Enrolment enrolment = new Enrolment(student.get(), course.get());
 
-        //todo:vf daca studentu este deja inrolat la curs
+        //vf daca studentu este deja inrolat la curs
 
         // NOT RECOMMENDED AS BELOW : WE SHOULD AVOID TO INTERROGATE THE DATABSE IF POSSIBLE TO GET DATA FROM WHAT WE HAVE ALREADY LOADED
 //        Optional<Enrolment> enrolment = enrollementRepository.findEnrolment(student.get().getId(), course.get().getId());
@@ -120,10 +109,53 @@ public class StudentService {
         if (student.get().getEnrolments().contains(enrolment)) {
             throw new StudentAlreadyEnrolledException("This student is already enrolled to this course !");
         }
-        Student student1 = student.get();
-        student1.addEnrolment(enrolment);
-        studentRepository.saveAndFlush(student1);
+
+        Student studentToEnroll   = student.get();
+        studentToEnroll.addEnrolment(enrolment);
+        studentRepository.saveAndFlush(studentToEnroll);
     }
 
+
+    @Transactional
+    @Modifying
+    public void unenrollStudentFromCourse(EnrollementInterface removeEnrollmentRequest){
+        Optional<Student> student = getStudentIfPresent(removeEnrollmentRequest);
+        Optional<Course> course = getCourseIfPresent(removeEnrollmentRequest);
+        Enrolment enrolment = new Enrolment(student.get(), course.get());
+
+        if (! student.get().getEnrolments().contains(enrolment)) {
+            throw new StudentAlreadyEnrolledException("Impossible unenrollment !" +
+                    "This student is not already enrolled to this course !");
+        }
+
+        Student studentToUnenroll = student.get();
+        studentToUnenroll.removeEnrolment(enrolment);
+        studentRepository.saveAndFlush(studentToUnenroll);
+        // WHY REMOVAL is not working, beeing done that I have cascade constraints All
+        // and orphanRemoval set to true
+        // https://docs.jboss.org/hibernate/core/3.3/reference/en/html/objectstate.html#objectstate-transitive
+        // https://stackoverflow.com/questions/2011519/jpa-onetomany-not-deleting-child
+    }
+
+    private Optional<Course> getCourseIfPresent(EnrollementInterface addEnrollementRequest) {
+        // vf existenta cursului
+        Optional<Course> course = courseRepository.findById(addEnrollementRequest.getIdCourse().longValue());
+
+        if (course.isEmpty()) {
+            throw new CourseNotPresentException("This ocurse is not present !");
+        }
+
+        return course;
+    }
+
+    private Optional<Student> getStudentIfPresent(EnrollementInterface addEnrollementRequest) {
+        // vf existenta studentului
+        Optional<Student> student = studentRepository.findById(addEnrollementRequest.getIdStudent().longValue());
+        if (student.isEmpty()) {
+            throw new StudentNotPresentException("This student is not preset !");
+        }
+
+        return student;
+    }
 
 }

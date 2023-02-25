@@ -60,9 +60,9 @@ public class Student {
     @OneToMany(
             mappedBy = "student",
             cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER
+            fetch = FetchType.EAGER,
+            orphanRemoval = true
     )
-
     @JsonManagedReference
     List<Enrolment> enrolments = new ArrayList<>();
 
@@ -77,6 +77,10 @@ public class Student {
         enrolment.setStudent(this);
     }
 
+    public void removeEnrolment(Enrolment enrolment){
+        this.enrolments.remove(enrolment);
+        enrolment.setStudent(null);
+    }
 
     @Override
     public String toString() {
