@@ -57,6 +57,10 @@ public class Course {
         enrolment.setCourse(this);
     }
 
+    public void removeEnrolment(Enrolment enrolment){
+        this.enrolments.remove(enrolment);
+    }
+
     @Override
     public String toString() {
         return "Course{" +
