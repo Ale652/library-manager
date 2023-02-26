@@ -1,5 +1,6 @@
 package com.example.librarymanager.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -44,22 +45,21 @@ public class Course {
     private String department;
 
 
-    @OneToMany(
-            mappedBy = "course",
-            cascade = CascadeType.ALL,
+    @ManyToMany(
+            mappedBy = "enrolledCourses",
             fetch = FetchType.EAGER
     )
-    @JsonManagedReference
-    List<Enrolment> enrolments = new ArrayList<>();
+    @JsonBackReference
+    List<Student> students  = new ArrayList<>();
 
-    public void addEnrolment(Enrolment enrolment){
-        this.enrolments.add(enrolment);
-        enrolment.setCourse(this);
+
+    @Override
+    public boolean equals(Object obj){
+
+        return  this.getId()==((Course)obj).getId();
     }
 
-    public void removeEnrolment(Enrolment enrolment){
-        this.enrolments.remove(enrolment);
-    }
+
 
     @Override
     public String toString() {
