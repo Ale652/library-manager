@@ -57,30 +57,42 @@ public class Student {
     @JsonManagedReference
     List<Book> books= new ArrayList<>();
 
-    @OneToMany(
-            mappedBy = "student",
+    @ManyToMany(
             cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER,
-            orphanRemoval = true
+            fetch = FetchType.EAGER
     )
-    @JsonManagedReference
-    List<Enrolment> enrolments = new ArrayList<>();
+    @JoinTable(name = "enrolment",
+     joinColumns = { @JoinColumn(name="student_id")},
+      inverseJoinColumns ={@JoinColumn(name="course_id")})
+     @JsonManagedReference
+      List<Course> enrolledCourses = new ArrayList<>();
 
     public void addBook(Book book){
         this.books.add(book);
         book.setStudent(this);
     }
 
+    public void addCourse(Course course){
 
-    public void addEnrolment(Enrolment enrolment){
-        this.enrolments.add(enrolment);
-        enrolment.setStudent(this);
+         enrolledCourses.add(course);
     }
 
-    public void removeEnrolment(Enrolment enrolment){
-        this.enrolments.remove(enrolment);
-        enrolment.setStudent(null);
+
+    public void removeCourse(Course course){
+
+         enrolledCourses.remove(course);
     }
+//
+//    public void addEnrolment(Enrolment enrolment){
+//        this.enrolments.add(enrolment);
+//        enrolment.setStudent(this);
+//    }
+//
+//
+//    public void removeEnrolment(Enrolment enrolment){
+//        this.enrolments.remove(enrolment);
+//        enrolment.setStudent(null);
+//    }
 
     @Override
     public String toString() {
