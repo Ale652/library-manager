@@ -49,9 +49,6 @@ public class Book {
     Long stars;
 
     @ManyToOne
-//            (
-//            fetch = FetchType.LAZY
-//    )
     @JoinColumn(
             name="user_id",
             referencedColumnName = "id",
