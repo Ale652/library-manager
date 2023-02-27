@@ -85,57 +85,7 @@ public class StudentService {
         return studentWithLowestAge.get();
     }
 
-
-//    @Transactional
-//    @Modifying
-//    public void enrolStudentToCourse(AddEnrollementRequest addEnrollementRequest) {
-//        //tratam prima oara logica pentru exceptii
-//        Optional<Student> student = getStudentIfPresent(addEnrollementRequest);
-//        Optional<Course> course = getCourseIfPresent(addEnrollementRequest);
-//        Enrolment enrolment = new Enrolment(student.get(), course.get());
-//
-//        //vf daca studentu este deja inrolat la curs
-//
-//        // NOT RECOMMENDED AS BELOW : WE SHOULD AVOID TO INTERROGATE THE DATABSE IF POSSIBLE TO GET DATA FROM WHAT WE HAVE ALREADY LOADED
-////        Optional<Enrolment> enrolment = enrollementRepository.findEnrolment(student.get().getId(), course.get().getId());
-//
-////        for(Enrolment enrolment : student.get().getEnrolments()){
-////            if(enrolment.getCourse().getId() == course.get().getId())
-////                throw new StudentAlreadyEnrolledException("This student is already enrolled to this course !");
-////        }
-//
-//        if (student.get().getEnrolments().contains(enrolment)) {
-//            throw new StudentAlreadyEnrolledException("This student is already enrolled to this course !");
-//        }
-//
-//        Student studentToEnroll   = student.get();
-//        studentToEnroll.addEnrolment(enrolment);
-//        studentRepository.saveAndFlush(studentToEnroll);
-//    }
-//
-//
-//    @Transactional
-//    @Modifying
-//    public void unenrollStudentFromCourse(EnrollementInterface removeEnrollmentRequest){
-//        Optional<Student> student = getStudentIfPresent(removeEnrollmentRequest);
-//        Optional<Course> course = getCourseIfPresent(removeEnrollmentRequest);
-//        Enrolment enrolment = new Enrolment(student.get(), course.get());
-//
-//        if (! student.get().getEnrolments().contains(enrolment)) {
-//            throw new StudentAlreadyEnrolledException("Impossible unenrollment !" +
-//                    "This student is not already enrolled to this course !");
-//        }
-//
-//        Student studentToUnenroll = student.get();
-//        studentToUnenroll.removeEnrolment(enrolment);
-//        System.out.println(studentToUnenroll.getEnrolments());
-//        studentRepository.saveAndFlush(studentToUnenroll);
-//        // WHY REMOVAL is not working, beeing done that I have cascade constraints All
-//        // and orphanRemoval set to true
-//        // https://docs.jboss.org/hibernate/core/3.3/reference/en/html/objectstate.html#objectstate-transitive
-//        // https://stackoverflow.com/questions/2011519/jpa-onetomany-not-deleting-child
-//    }
-
+// TODO : Check if it is more necessary
     private Optional<Course> getCourseIfPresent(EnrollementInterface addEnrollementRequest) {
         // vf existenta cursului
         Optional<Course> course = courseRepository.findById(addEnrollementRequest.getIdCourse().longValue());
@@ -166,10 +116,24 @@ public class StudentService {
     @Transactional
     @Modifying
     public void removeEnrolment(Student student, Course course){
-        student.removeCourse(course);
+        if(student.getEnrolledCourses().contains(course)) {
+            student.removeCourse(course);
+            studentRepository.saveAndFlush(student);
+        }
+    }
 
+    @Transactional
+    @Modifying
+    public void addEnrolment(Student student, Course course){
+        // TODO :
+        // se verifica ca exista cursul
 
-        studentRepository.saveAndFlush(student);
+        // se verifica ca exista studentul
+
+        if( ! student.getEnrolledCourses().contains(course)) {
+            student.addCourse(course);
+            studentRepository.saveAndFlush(student);
+        }
     }
 
 }

@@ -73,26 +73,14 @@ public class Student {
     }
 
     public void addCourse(Course course){
-
          enrolledCourses.add(course);
     }
 
 
     public void removeCourse(Course course){
-
          enrolledCourses.remove(course);
     }
-//
-//    public void addEnrolment(Enrolment enrolment){
-//        this.enrolments.add(enrolment);
-//        enrolment.setStudent(this);
-//    }
-//
-//
-//    public void removeEnrolment(Enrolment enrolment){
-//        this.enrolments.remove(enrolment);
-//        enrolment.setStudent(null);
-//    }
+
 
     @Override
     public String toString() {
