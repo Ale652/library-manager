@@ -15,18 +15,22 @@ import java.util.Optional;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
 
+    public List<Book> findAllByOrderByStarsDesc();
 
-    @Query("select b from Book b where  b.price > ?1 and b.author = ?2 ")
-    Optional<List<Book>> findAllBooksGraterPriceThanMentionedOfSpecificAuthor(double price , String author);
+    public List<Book> findByAuthorLike(String likePattern);
 
-    @Query("select  b from Book b where  b.price = (select  min(a.price) from  Book  a)")
-    Optional<Book> findLowerPriceBook();
+    Optional<Book> findTopByOrderByPriceAsc();
+
+    Optional<Book> findTopByOrderByPriceDesc();
+
+    public List<Book> findAllByOrderByPriceAsc();
+
+    List<Book> findByPriceGreaterThanAndAuthorLike(Long price, String likePattern);
     //
     @Query("select b from Book b where b.price =  (select max(a.price) from  Book a )")
     Optional<Book> findMaxPriceBook();
 
     @Query("select b from Book b order by b.price desc")
-
     Page<Book> findTop10PriceBooks(Pageable pageable);
 
     @Query("select b from Book b order by b.price asc")
@@ -34,6 +38,5 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     @Query("select b from Book b where b.stars = (select max(a.stars) from Book a)")
     Optional<List<Book>> bestBooks();
-
 
 }
