@@ -25,7 +25,6 @@ public class StudentService {
 
     private CourseRepository courseRepository;
 
-
     public StudentService(StudentRepository studentRepository, CourseRepository courseRepository) {
         this.studentRepository = studentRepository;
         this.courseRepository = courseRepository;
@@ -85,7 +84,6 @@ public class StudentService {
         return studentWithLowestAge.get();
     }
 
-// TODO : Check if it is more necessary
     private Optional<Course> getCourseIfPresent(EnrollementInterface addEnrollementRequest) {
         // vf existenta cursului
         Optional<Course> course = courseRepository.findById(addEnrollementRequest.getIdCourse().longValue());
@@ -107,6 +105,36 @@ public class StudentService {
         return student;
     }
 
+
+    // Enrollmentn\UnEnrollment
+    @Transactional
+    @Modifying
+    public void addEnrolment(Student student, Course course){
+
+        if( ! student.getEnrolledCourses().contains(course)) {
+            student.addCourse(course);
+            studentRepository.saveAndFlush(student);
+        }
+    }
+
+    @Transactional
+    @Modifying
+    public void addEnrolment(AddEnrollementRequest addEnrollementRequest) {
+
+        Course course = getCourseIfPresent(addEnrollementRequest).get();
+        Student student = getStudentIfPresent(addEnrollementRequest).get();
+
+        checkIfStudentAlreadyEnrolledAtTheCourse(course, student);
+
+        this.addEnrolment(student, course);
+    }
+
+    private void checkIfStudentAlreadyEnrolledAtTheCourse(Course course, Student student) {
+        if( student.getEnrolledCourses().contains(course) ) {
+            throw new StudentAlreadyEnrolledException("This student is already enrolled to this course !");
+        }
+    }
+
     @Transactional
     @Modifying
     public void removeStudent(Student student){
@@ -124,16 +152,23 @@ public class StudentService {
 
     @Transactional
     @Modifying
-    public void addEnrolment(Student student, Course course){
-        // TODO :
-        // se verifica ca exista cursul
+    public void removeEnrolment(EnrollementInterface removeEnrollmentRequest){
 
-        // se verifica ca exista studentul
+        Course course = getCourseIfPresent(removeEnrollmentRequest).get();
+        Student student = getStudentIfPresent(removeEnrollmentRequest).get();
 
-        if( ! student.getEnrolledCourses().contains(course)) {
-            student.addCourse(course);
-            studentRepository.saveAndFlush(student);
+        checkIfStudentEnrolledAtTheCourse(course, student);
+
+        this.removeEnrolment(student, course);
+        studentRepository.saveAndFlush(student);
+    }
+
+    private void checkIfStudentEnrolledAtTheCourse(Course course, Student student) {
+        if (! student.getEnrolledCourses().contains(course)) {
+            throw new StudentAlreadyEnrolledException("Impossible unenrollment !" +
+                    "This student is not already enrolled to this course !");
         }
     }
 
+    //TODO : addBook\removeBook
 }

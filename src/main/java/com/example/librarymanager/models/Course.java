@@ -59,8 +59,6 @@ public class Course {
         return  this.getId()==((Course)obj).getId();
     }
 
-
-
     @Override
     public String toString() {
         return "Course{" +

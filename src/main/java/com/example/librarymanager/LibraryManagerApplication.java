@@ -38,6 +38,7 @@ public class LibraryManagerApplication {
                                 , CourseRepository courseRepository, StudentService studentService) {
         return  args->{
 
+            //TODO: ORDONATE :
             // Book Queries
 
 //            bookRepository.findAll().forEach(e->{
@@ -117,8 +118,13 @@ public class LibraryManagerApplication {
 
 //            studentService.removeEnrolment(stuent, course);
 
-            studentService.addEnrolment(stuent, course);
+//            studentService.addEnrolment(stuent, course);
 
+//            AddEnrollementRequest addEnrollementRequest = new AddEnrollementRequest(1, 2);
+//            studentService.addEnrolment(addEnrollementRequest);
+
+            RemoveEnrollmentRequest removeEnrollmentRequest = new RemoveEnrollmentRequest(1, 2);
+            studentService.removeEnrolment(removeEnrollmentRequest);
 
         };
     }
