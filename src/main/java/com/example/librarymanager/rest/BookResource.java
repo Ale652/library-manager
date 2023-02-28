@@ -30,10 +30,10 @@ public class BookResource {
 
     //getAllBooksGraterPriceThanMentionedOfSpecificAuthor
     @GetMapping("/bookListGraterPriceThanMentionedOfSpecificAuthor")
-    public ResponseEntity<BookListResponse> bookListGraterPriceThanMentionedOfSpecificAuthor(@RequestParam double price, @RequestParam String author){
+    public ResponseEntity<BookListResponse> bookListGraterPriceThanMentionedOfSpecificAuthor(@RequestParam long price, @RequestParam String author){
 
         BookListResponse bookListResponse = BookListResponse.builder()
-                .bookList(bookService.getAllBooksGraterPriceThanMentionedOfSpecificAuthor(price, author))
+                .bookList(bookService.findByPriceGreaterThanAndAuthorLike(price, author))
                 .message("All books")
                 .build();
 

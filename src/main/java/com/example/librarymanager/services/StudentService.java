@@ -7,6 +7,7 @@ import com.example.librarymanager.exceptions.CourseNotPresentException;
 import com.example.librarymanager.exceptions.EmptyDatabaseExeception;
 import com.example.librarymanager.exceptions.StudentAlreadyEnrolledException;
 import com.example.librarymanager.exceptions.StudentNotPresentException;
+import com.example.librarymanager.models.Book;
 import com.example.librarymanager.models.Course;
 import com.example.librarymanager.models.Student;
 import com.example.librarymanager.repository.CourseRepository;
@@ -171,4 +172,14 @@ public class StudentService {
     }
 
     //TODO : addBook\removeBook
+    // Quetion ? Between book and student why to do not do many to many =>
+    // many students to have many books
+    // many books to be used by many students
+    // This limitation do not permit to have a book for many students
+    // => a book may be used by many studenst, because there are n instances of this book in that library
+    // why not keep an history on what a student have had ever as books used
+
+
+
 }
+

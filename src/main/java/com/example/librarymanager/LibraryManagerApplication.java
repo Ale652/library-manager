@@ -12,6 +12,7 @@ import com.example.librarymanager.models.Student;
 import com.example.librarymanager.repository.BookRepository;
 import com.example.librarymanager.repository.CourseRepository;
 import com.example.librarymanager.repository.StudentRepository;
+import com.example.librarymanager.services.BookService;
 import com.example.librarymanager.services.StudentService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -35,47 +36,15 @@ public class LibraryManagerApplication {
 
     @Bean
     CommandLineRunner asdasdsa(BookRepository bookRepository, StudentRepository studentRepository
-                                , CourseRepository courseRepository, StudentService studentService) {
+                                , CourseRepository courseRepository, StudentService studentService,
+                               BookService bookService) {
         return  args->{
 
-            //TODO: ORDONATE :
+            //TODO: ORDONATE + Change Structure in order to be able to execute whatever you want - not only a functionarlity
             // Book Queries
 
-//            bookRepository.findAll().forEach(e->{
-//
-//                System.out.println(e);
-//            });
 
-//            bookRepository.findAllBooksGraterPriceThanMentionedOfSpecificAuthor(15,"Daryle Kelbie")
-//                    .get().forEach(System.out::println);
-
-//            System.out.println("############### findLowerPriceBook :");
-//            System.out.println(bookRepository.findLowerPriceBook().get());
-//            System.out.println("############### findMaxPriceBook :");
-//            System.out.println(bookRepository.findMaxPriceBook().get());
-//            System.out.println("############### findTop10PriceBooks :");
-//            bookRepository.findTop10PriceBooks(PageRequest.of(1,10)).forEach(System.out::println);
-//            System.out.println("############### findLower10PriceBooks :");
-//            bookRepository.findLower10PriceBooks(PageRequest.of(1, 10)).forEach(System.out::println);
-//            System.out.println("############### Best Books :");
-//            bookRepository.bestBooks().get().forEach(System.out::println);
-
-
-//            Student student = studentRepository.findById(1L).get();
-//            Course course = courseRepository.findById(1L).get();
-
-
-
-//            for(int i=0;i<10;i++){
-//
-//                student.addBook(
-//                        Book.builder().author("sad"+i).price(12).title("asdasdas").stars(12l).build()
-//                );
-//            }
-//
-//            studentRepository.saveAndFlush(student);
-
-            // Student queries
+            // Student
 
 //            student.getBooks().forEach(System.out::println);
             // 1. get student with most books
@@ -103,7 +72,7 @@ public class LibraryManagerApplication {
 
 
 
-            // Course Queries
+            // Course
 
             // 1. getFirst10CoursesOrderByepartmentAsc
 //            System.out.println("getFirst10CoursesOrderByepartmentAsc: ");
@@ -112,7 +81,7 @@ public class LibraryManagerApplication {
 //
 
 
-// Remove Enrolment
+            // Remove Enrolment
             Course course = courseRepository.findById(1L).get();
             Student stuent = studentRepository.findById(1L).get();
 
@@ -123,8 +92,51 @@ public class LibraryManagerApplication {
 //            AddEnrollementRequest addEnrollementRequest = new AddEnrollementRequest(1, 2);
 //            studentService.addEnrolment(addEnrollementRequest);
 
-            RemoveEnrollmentRequest removeEnrollmentRequest = new RemoveEnrollmentRequest(1, 2);
-            studentService.removeEnrolment(removeEnrollmentRequest);
+//            RemoveEnrollmentRequest removeEnrollmentRequest = new RemoveEnrollmentRequest(1, 2);
+//            studentService.removeEnrolment(removeEnrollmentRequest);
+
+
+            // Book
+
+//            List<Book> listOfBooksInAscendingOrderingPrice = bookService.getAllBooksInAscendingOrderByPrice();
+//            System.out.println(listOfBooksInAscendingOrderingPrice);
+
+//            List<Book> listOfBooksInDescendingOrderByStars = bookService.getAllBooksInDescendingOrderByStars();
+//            System.out.println(listOfBooksInDescendingOrderByStars);
+
+            String likePattern = "Jeddy Christaeas";
+//            List<Book> listOfBooksByAuthor = bookService.findByAuthorLike(likePattern);
+//            System.out.println(listOfBooksByAuthor);
+
+//            List<Book> listOfBooksByPriceGreaterThanAndAuthorLike =
+//                    bookService.findByPriceGreaterThanAndAuthorLike(50L, likePattern);
+//            System.out.println(listOfBooksByPriceGreaterThanAndAuthorLike);
+
+
+//            System.out.println(bookService.findTopByOrderByPriceAsc());
+
+//            System.out.println(bookService.findTopByOrderByPriceDesc());
+
+//            bookService.findTop10PriceBooks().forEach(System.out::println);
+
+//            bookService.findLower10PriceBooks().forEach(System.out::println);
+
+            bookService.bestBooks().get().forEach(System.out::println);
+
+
+
+//            Student student = studentRepository.findById(1L).get();
+//            Course course = courseRepository.findById(1L).get();
+
+
+//            for(int i=0;i<10;i++){
+//
+//                student.addBook(
+//                        Book.builder().author("sad"+i).price(12).title("asdasdas").stars(12l).build()
+//                );
+//            }
+//
+//            studentRepository.saveAndFlush(student);
 
         };
     }
