@@ -13,6 +13,7 @@ import com.example.librarymanager.repository.BookRepository;
 import com.example.librarymanager.repository.CourseRepository;
 import com.example.librarymanager.repository.StudentRepository;
 import com.example.librarymanager.services.BookService;
+import com.example.librarymanager.services.CourseService;
 import com.example.librarymanager.services.StudentService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -37,12 +38,12 @@ public class LibraryManagerApplication {
     @Bean
     CommandLineRunner asdasdsa(BookRepository bookRepository, StudentRepository studentRepository
                                 , CourseRepository courseRepository, StudentService studentService,
-                               BookService bookService) {
+                               BookService bookService, CourseService courseService) {
         return  args->{
 
             //TODO: ORDONATE + Change Structure in order to be able to execute whatever you want - not only a functionarlity
             // Book Queries
-            
+
 
             // Book
 
@@ -90,16 +91,19 @@ public class LibraryManagerApplication {
 //            System.out.println("selectStudentWithMaxBooks");
 //            studentRepository.selectStudentWithMaxBooks(PageRequest.of(1, 1)).forEach(System.out::println);
 //
-//            studentRepository.findTop10ByOrderByAgeDesc().get().forEach(System.out::println);
+//            studentService.findTop10ByOrderByAgeDesc().get().forEach(System.out::println);
 
+//            studentService.findTop10ByOrderByAgeAsc().get().forEach(System.out::println);
 
-            // Course
+//            String email  = "tgillmore4@godaddy.com";
+//            studentService.findByEmailLike(email).forEach(System.out::println);
 
-            // 1. getFirst10CoursesOrderByepartmentAsc
-//            System.out.println("getFirst10CoursesOrderByepartmentAsc: ");
-//            courseRepository.getFirst10CoursesOrderByepartmentAsc(PageRequest.of(1, 10))
-//                    .get().forEach(System.out::println);
-//
+//            String firstName = "Marya";
+//            String secondName = "Edik";
+//            studentService.findByFirstNameLikeAndSecondNameLike(firstName, secondName).forEach(System.out::println);
+
+//TODO: To review :
+//            studentService.getListOfStudentNameWithMaxBooks().forEach(System.out::println);
 
 
             // Remove Enrolment
@@ -115,6 +119,21 @@ public class LibraryManagerApplication {
 
 //            RemoveEnrollmentRequest removeEnrollmentRequest = new RemoveEnrollmentRequest(1, 2);
 //            studentService.removeEnrolment(removeEnrollmentRequest);
+
+
+            // Course
+
+//            courseService.getAllCourses().forEach(System.out::println);
+
+//            System.out.println(courseService.getCourseByNameLike("DFA"));
+
+//            courseService.findByDepartmentLike("Support").forEach(System.out::println);
+
+//            System.out.println("getFirst10CoursesOrderByepartmentAsc: ");
+//            courseRepository.getFirst10CoursesOrderByepartmentAsc(PageRequest.of(1, 10))
+//                    .get().forEach(System.out::println);
+//
+
 
 
             //----------------------------------------------------------------------------------

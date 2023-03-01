@@ -76,11 +76,9 @@ public class Student {
          enrolledCourses.add(course);
     }
 
-
     public void removeCourse(Course course){
          enrolledCourses.remove(course);
     }
-
 
     @Override
     public String toString() {

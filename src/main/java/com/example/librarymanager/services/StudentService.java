@@ -57,7 +57,7 @@ public class StudentService {
         return studentRepository.findTopByOrderByAgeAsc();
     }
 
-    public  List<Optional<Student>> findTopByOrderByAgeDesc(){ return studentRepository.findTopByOrderByAgeDesc(); }
+    public List<Optional<Student>> findTopByOrderByAgeDesc(){ return studentRepository.findTopByOrderByAgeDesc(); }
 
     public List<String> getListOfStudentNameWithMaxBooks() {
         Optional<List<String>> studentWithMaxBooks = studentRepository.selectStudentWithMaxBooks();
@@ -69,7 +69,14 @@ public class StudentService {
         return studentWithMaxBooks.get();
     }
 
-    public     Optional<List<Student>> findTop10ByOrderByAgeDesc(){ return studentRepository.findTop10ByOrderByAgeDesc(); }
+    public Optional<List<Student>> findTop10ByOrderByAgeDesc(){ return studentRepository.findTop10ByOrderByAgeDesc(); }
+
+    public Optional<List<Student>> findTop10ByOrderByAgeAsc(){ return studentRepository.findTop10ByOrderByAgeAsc(); }
+
+    public List<Student> findByEmailLike(String likePattern){ return studentRepository.findByEmailLike(likePattern); }
+
+    public List<Student> findByFirstNameLikeAndSecondNameLike(String firstName, String secondName){
+        return studentRepository.findByFirstNameLikeAndSecondNameLike(firstName, secondName); }
 
     private Optional<Course> getCourseIfPresent(EnrollementInterface addEnrollementRequest) {
         // vf existenta cursului

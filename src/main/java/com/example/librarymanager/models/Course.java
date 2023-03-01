@@ -35,7 +35,6 @@ public class Course {
     )
     private Long id;
 
-
     @NotNull
     @Size(min = 2, message = "Numele are cel putin 2 litere!")
     private String name;
@@ -44,14 +43,12 @@ public class Course {
     @Size(min = 2, message = "Departamentul are cel putin 2 litere !")
     private String department;
 
-
     @ManyToMany(
             mappedBy = "enrolledCourses",
             fetch = FetchType.EAGER
     )
     @JsonBackReference
     List<Student> students  = new ArrayList<>();
-
 
     @Override
     public boolean equals(Object obj){

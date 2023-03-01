@@ -13,6 +13,11 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     @Query("select c from Course c order by c.department asc")
     Optional<List<Course>> getFirst10CoursesOrderByepartmentAsc(Pageable p);
 
+    Course findByNameLike(String course);
+
+    List<Course> findByDepartmentLike(String course);
+
+
 //    // get list of enrolments for a Course
 //    @Query("select c.enrolments from Course c where c.id = ?1")
 //    Optional<List<Enrolment>> getListOfEnrolmentsForACourse(Long course_id);
