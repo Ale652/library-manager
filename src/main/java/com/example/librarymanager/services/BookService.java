@@ -72,17 +72,14 @@ public class BookService {
                 return bookRepository.findTopByOrderByPriceDesc();
         }
 
-        public  Page<Book>  findTop10PriceBooks(){
-                return bookRepository.findTop10PriceBooks(PageRequest.of(1,10));
-        }
+//        public  Page<Book>  findTop10PriceBooks(){
+//                return bookRepository.findTop10PriceBooks(PageRequest.of(1,10));
+//        }
 
         public  Page<Book>  findLower10PriceBooks(){ return bookRepository.findLower10PriceBooks(PageRequest.of(1, 10));}
 
         public Optional<List<Book>> bestBooks(){
                 return bookRepository.bestBooks();
         }
-
-
-
 
 }

@@ -22,8 +22,11 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     Optional<List<Student>> findTop10ByOrderByAgeDesc();
 
-    @Query("select max(count(s.books)) from Student s")
-    Optional<List<Student>> findMaxBooksOfStudent();
+    Optional<List<Student>> findTop10ByOrderByAgeAsc();
+
+    List<Student> findByEmailLike(String likePattern);
+
+    List<Student> findByFirstNameLikeAndSecondNameLike(String firstName, String secondName);
 
     @Query(value = "select first_name ,count(*) as number from student " +
             "join book on book.user_id = student.id " +

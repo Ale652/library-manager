@@ -48,6 +48,9 @@ public class Book {
     @Column( name="stars")
     Long stars;
 
+    //TODO:
+    // created_at ??
+
     @ManyToOne
     @JoinColumn(
             name="user_id",

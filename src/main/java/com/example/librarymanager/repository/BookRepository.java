@@ -25,13 +25,12 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     public List<Book> findAllByOrderByPriceAsc();
 
-    List<Book> findByPriceGreaterThanAndAuthorLike(Long price, String likePattern);
-    //
-    @Query("select b from Book b where b.price =  (select max(a.price) from  Book a )")
-    Optional<Book> findMaxPriceBook();
+    public List<Book> findAllByOrderByPriceDesc();
 
-    @Query("select b from Book b order by b.price desc")
-    Page<Book> findTop10PriceBooks(Pageable pageable);
+    List<Book> findByPriceGreaterThanAndAuthorLike(Long price, String likePattern);
+
+//    @Query("select b from Book b order by b.price desc")
+//    Page<Book> findTop10PriceBooks(Pageable pageable);
 
     @Query("select b from Book b order by b.price asc")
     Page<Book> findLower10PriceBooks(Pageable pageable);
