@@ -12,28 +12,23 @@ import java.util.Optional;
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
 
-//    @Query("select max(count(s.books)) from Student s")
-//    Optional<List<Student>> findMaxBooksOfStudent();
+    List<Student> findByAgeGreaterThan(Integer age);
 
+    List<Student> findByAgeLessThan(Integer age);
 
-    @Query("select s from Student s where  s.age >25 ")
-    Optional<List<Student>> findAllStudenstAgedMoreThan25();
+    List<Optional<Student>> findTopByOrderByAgeAsc();
 
+    List<Optional<Student>> findTopByOrderByAgeDesc();
 
-    @Query("select concat(s.firstName,' ',s.secondName,' ',s.age) from Student s where s.age = (select  min(a.age) from  Student  a)")
-    Optional<List<String>> findLowerAgeStudent();
+    Optional<List<Student>> findTop10ByOrderByAgeDesc();
 
-    @Query("select concat(s.firstName,' ',s.secondName,' ',s.age) from Student s where s.age = (select  max(a.age) from  Student  a)")
-    Optional<List<String>> findHigherAgeStudent();
+    @Query("select max(count(s.books)) from Student s")
+    Optional<List<Student>> findMaxBooksOfStudent();
 
     @Query(value = "select first_name ,count(*) as number from student " +
             "join book on book.user_id = student.id " +
             "group by first_name  order by  number desc  limit 1  "
             , nativeQuery = true)
     Optional<List<String>> selectStudentWithMaxBooks();
-
-
-    @Query("select s from Student s order by s.age asc")
-    Page<Student> findLower10AgedStudent(Pageable pageable);
 
 }

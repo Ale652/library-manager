@@ -42,34 +42,55 @@ public class LibraryManagerApplication {
 
             //TODO: ORDONATE + Change Structure in order to be able to execute whatever you want - not only a functionarlity
             // Book Queries
+            
+
+            // Book
+
+//            List<Book> listOfBooksInAscendingOrderingPrice = bookService.getAllBooksInAscendingOrderByPrice();
+//            System.out.println(listOfBooksInAscendingOrderingPrice);
+
+//            List<Book> listOfBooksInDescendingOrderByStars = bookService.getAllBooksInDescendingOrderByStars();
+//            System.out.println(listOfBooksInDescendingOrderByStars);
+
+//            String likePattern = "Jeddy Christaeas";
+//            List<Book> listOfBooksByAuthor = bookService.findByAuthorLike(likePattern);
+//            System.out.println(listOfBooksByAuthor);
+
+//            List<Book> listOfBooksByPriceGreaterThanAndAuthorLike =
+//                    bookService.findByPriceGreaterThanAndAuthorLike(50L, likePattern);
+//            System.out.println(listOfBooksByPriceGreaterThanAndAuthorLike);
+
+
+//            System.out.println(bookService.findTopByOrderByPriceAsc());
+
+//            System.out.println(bookService.findTopByOrderByPriceDesc());
+
+//            bookService.findTop10PriceBooks().forEach(System.out::println);
+
+//            bookService.findLower10PriceBooks().forEach(System.out::println);
+
+//            bookService.bestBooks().get().forEach(System.out::println);
+
 
 
             // Student
 
 //            student.getBooks().forEach(System.out::println);
-            // 1. get student with most books
+
 //            studentRepository.findMaxBooksOfStudent().get().forEach(System.out::println);
 
-            // 2. findAllStudenstAgedMoreThan25
-//            System.out.println("findAllStudenstAgedMoreThan25");
-//            studentRepository.findAllStudenstAgedMoreThan25().get().forEach(System.out::println);
+//            studentService.findByAgeGreaterThan(25).forEach(System.out::println);
 //
-//            // 3. findLowerAgeStudent
-//            System.out.println("findLowerAgeStudent");
-//            studentRepository.findLowerAgeStudent().get().forEach(System.out::println);
-//
-//            // 4. findHigherAgeStudent
-//            System.out.println("findHigherAgeStudent");
-//            studentRepository.findHigherAgeStudent().get().forEach(System.out::println);
-//
-//            // 5. selectStudentWithMaxBooks
+//            studentService.findByAgeLessThan(25).forEach(System.out::println);
+
+//            studentService.findTopByOrderByAgeAsc().forEach(System.out::println);
+
+//            studentService.findTopByOrderByAgeDesc().forEach(System.out::println);
+
 //            System.out.println("selectStudentWithMaxBooks");
 //            studentRepository.selectStudentWithMaxBooks(PageRequest.of(1, 1)).forEach(System.out::println);
 //
-//            // 6. findLower10AgedStudent
-//            System.out.println("findLower10AgedStudent");
-//            studentRepository.findLower10AgedStudent(PageRequest.of(1, 10)).forEach(System.out::println);
-
+//            studentRepository.findTop10ByOrderByAgeDesc().get().forEach(System.out::println);
 
 
             // Course
@@ -96,34 +117,7 @@ public class LibraryManagerApplication {
 //            studentService.removeEnrolment(removeEnrollmentRequest);
 
 
-            // Book
-
-//            List<Book> listOfBooksInAscendingOrderingPrice = bookService.getAllBooksInAscendingOrderByPrice();
-//            System.out.println(listOfBooksInAscendingOrderingPrice);
-
-//            List<Book> listOfBooksInDescendingOrderByStars = bookService.getAllBooksInDescendingOrderByStars();
-//            System.out.println(listOfBooksInDescendingOrderByStars);
-
-            String likePattern = "Jeddy Christaeas";
-//            List<Book> listOfBooksByAuthor = bookService.findByAuthorLike(likePattern);
-//            System.out.println(listOfBooksByAuthor);
-
-//            List<Book> listOfBooksByPriceGreaterThanAndAuthorLike =
-//                    bookService.findByPriceGreaterThanAndAuthorLike(50L, likePattern);
-//            System.out.println(listOfBooksByPriceGreaterThanAndAuthorLike);
-
-
-//            System.out.println(bookService.findTopByOrderByPriceAsc());
-
-//            System.out.println(bookService.findTopByOrderByPriceDesc());
-
-//            bookService.findTop10PriceBooks().forEach(System.out::println);
-
-//            bookService.findLower10PriceBooks().forEach(System.out::println);
-
-            bookService.bestBooks().get().forEach(System.out::println);
-
-
+            //----------------------------------------------------------------------------------
 
 //            Student student = studentRepository.findById(1L).get();
 //            Course course = courseRepository.findById(1L).get();

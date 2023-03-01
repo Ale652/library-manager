@@ -22,6 +22,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
+
+    //TODO : make a function to return the Type expected or an Error
+
     private StudentRepository studentRepository;
 
     private CourseRepository courseRepository;
@@ -44,16 +47,17 @@ public class StudentService {
 
     }
 
-    public String getStudentNameWithMaxBooks() {
-        Optional<List<String>> studentWithMaxBooks = studentRepository.selectStudentWithMaxBooks();
-
-        if (studentWithMaxBooks.isEmpty()) {
-
-            throw new EmptyDatabaseExeception("No student with max books.");
-        }
-
-        return studentWithMaxBooks.get().stream().map(s -> s).collect(Collectors.joining());
+    public List<Student> findByAgeGreaterThan(Integer age){
+        return studentRepository.findByAgeGreaterThan(age);
     }
+
+    public List<Student> findByAgeLessThan(Integer age){ return studentRepository.findByAgeLessThan(age); }
+
+    public List<Optional<Student>> findTopByOrderByAgeAsc(){
+        return studentRepository.findTopByOrderByAgeAsc();
+    }
+
+    public  List<Optional<Student>> findTopByOrderByAgeDesc(){ return studentRepository.findTopByOrderByAgeDesc(); }
 
     public List<String> getListOfStudentNameWithMaxBooks() {
         Optional<List<String>> studentWithMaxBooks = studentRepository.selectStudentWithMaxBooks();
@@ -65,25 +69,7 @@ public class StudentService {
         return studentWithMaxBooks.get();
     }
 
-    public List<String> findHigherAgeStudent() {
-        Optional<List<String>> studentWithHighestAge = studentRepository.findHigherAgeStudent();
-
-        if (studentWithHighestAge.isEmpty()) {
-
-            throw new EmptyDatabaseExeception("No student with max age");
-        }
-        return studentWithHighestAge.get();
-    }
-
-    public List<String> findLowestAgeStudent() {
-        Optional<List<String>> studentWithLowestAge = studentRepository.findLowerAgeStudent();
-
-        if (studentWithLowestAge.isEmpty()) {
-
-            throw new EmptyDatabaseExeception("No student with max age");
-        }
-        return studentWithLowestAge.get();
-    }
+    public     Optional<List<Student>> findTop10ByOrderByAgeDesc(){ return studentRepository.findTop10ByOrderByAgeDesc(); }
 
     private Optional<Course> getCourseIfPresent(EnrollementInterface addEnrollementRequest) {
         // vf existenta cursului
