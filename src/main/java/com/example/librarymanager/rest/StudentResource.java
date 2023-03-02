@@ -8,16 +8,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("api/v1/stundents")
 public class StudentResource {
-
 
     private StudentService studentService;
     public StudentResource(StudentService studentService) {
         this.studentService = studentService;
     }
-
 
     @GetMapping("/")
     public ResponseEntity<StudentListResponse>studentList(){
@@ -29,16 +29,6 @@ public class StudentResource {
 
         return new ResponseEntity<>(studentListResponse, HttpStatus.OK);
     }
-    //TODO : error here of incomatibility
-//    @GetMapping("/studentWithMaxBooks")
-//    public ResponseEntity<SudentWIthMaxNrBooksResponse>studentWithMaxBooks(){
-//        SudentWIthMaxNrBooksResponse studentWIthMaxBooksResponse = SudentWIthMaxNrBooksResponse.builder()
-//                .student(studentService.getStudentNameWithMaxBooks())
-//                .message("This is the student with max books list")
-//                .build();
-//
-//        return  new ResponseEntity<>(studentWIthMaxBooksResponse, HttpStatus.OK);
-//    }
 
     @GetMapping("/listOfStudentsWithMaxBooks")
     public ResponseEntity<StudentListWithMaxNrBooksResponse>listOfStudentsWithMaxBooks(){
@@ -49,25 +39,30 @@ public class StudentResource {
 
         return  new ResponseEntity<>(studentListWithMaxNrBooksResponse, HttpStatus.OK);
     }
-    //TODO : error here of incomatibility
-//    @GetMapping("/listOfStudentsWithHighestAge")
-//    public ResponseEntity<StudentsWithHighestAgeResponse>listOfStudentsWithHighestAge(){
-//        StudentsWithHighestAgeResponse studentListWithHighestAgeResponse = StudentsWithHighestAgeResponse.builder()
-//                .listOfStudentsWithHighestAge(studentService.findTopByOrderByAgeDesc())
-//                .message("These are the students with higher age ")
-//                .build();
-//
-//        return  new ResponseEntity<>(studentListWithHighestAgeResponse, HttpStatus.OK);
-//    }
 
-//    @GetMapping("/listOfStudentsWithLowestAge")
-//    public ResponseEntity<StudentsWithLowestAgeResponse>listOfStudentsWithLowestAge(){
-//        StudentsWithLowestAgeResponse studentsWithLowestAgeResponse = StudentsWithLowestAgeResponse.builder()
-//                .listOfStudentsWithLowestAge(studentService.findTopByOrderByAgeAsc())
-//                .message("These are the students with higher age ")
-//                .build();
-//
-//        return  new ResponseEntity<>(studentsWithLowestAgeResponse, HttpStatus.OK);
-//    }
+    //TODO : to test it
+    @GetMapping("/listOfStudentsWithHighestAge")
+    public ResponseEntity<StudentsWithHighestAgeResponse>listOfStudentsWithHighestAge(){
+        StudentsWithHighestAgeResponse studentListWithHighestAgeResponse = StudentsWithHighestAgeResponse.builder()
+                .listOfStudentsWithHighestAge((studentService.findTopByOrderByAgeDesc().
+                        stream().map(e -> e.get().getFirstName())).
+                        collect(Collectors.toList()))
+                .message("These are the students with higher age ")
+                .build();
+
+        return  new ResponseEntity<>(studentListWithHighestAgeResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/listOfStudentsWithLowestAge")
+    public ResponseEntity<StudentsWithLowestAgeResponse>listOfStudentsWithLowestAge(){
+        StudentsWithLowestAgeResponse studentsWithLowestAgeResponse = StudentsWithLowestAgeResponse.builder()
+                .listOfStudentsWithLowestAge(studentService.findTopByOrderByAgeAsc().
+                        stream().map(e->e.get().getFirstName()).
+                        collect(Collectors.toList()))
+                .message("These are the students with higher age ")
+                .build();
+
+        return  new ResponseEntity<>(studentsWithLowestAgeResponse, HttpStatus.OK);
+    }
 
 }

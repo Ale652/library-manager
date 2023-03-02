@@ -28,7 +28,6 @@ public class BookResource {
         return new ResponseEntity<>(bookListResponse, HttpStatus.OK);
     }
 
-    //getAllBooksGraterPriceThanMentionedOfSpecificAuthor
     @GetMapping("/bookListGraterPriceThanMentionedOfSpecificAuthor")
     public ResponseEntity<BookListResponse> bookListGraterPriceThanMentionedOfSpecificAuthor(@RequestParam long price, @RequestParam String author){
 

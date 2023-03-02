@@ -2,12 +2,10 @@ package com.example.librarymanager.services;
 
 import com.example.librarymanager.dto.AddEnrollementRequest;
 import com.example.librarymanager.dto.EnrollementInterface;
-import com.example.librarymanager.dto.RemoveEnrollmentRequest;
 import com.example.librarymanager.exceptions.CourseNotPresentException;
 import com.example.librarymanager.exceptions.EmptyDatabaseExeception;
 import com.example.librarymanager.exceptions.StudentAlreadyEnrolledException;
 import com.example.librarymanager.exceptions.StudentNotPresentException;
-import com.example.librarymanager.models.Book;
 import com.example.librarymanager.models.Course;
 import com.example.librarymanager.models.Student;
 import com.example.librarymanager.repository.CourseRepository;
@@ -18,12 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
-
-    //TODO : make a function to return the Type expected or an Error
 
     private StudentRepository studentRepository;
 
@@ -40,7 +35,7 @@ public class StudentService {
 
         if (students.size() == 0) {
 
-            throw new EmptyDatabaseExeception("Dtabase empty ");
+            throwExceptionDatabaseEmpty();
         }
 
         return students;
@@ -48,35 +43,105 @@ public class StudentService {
     }
 
     public List<Student> findByAgeGreaterThan(Integer age){
-        return studentRepository.findByAgeGreaterThan(age);
+
+        List<Student> students = studentRepository.findByAgeGreaterThan(age);
+
+        if (students.size() == 0) {
+
+            throwExceptionDatabaseEmpty();
+        }
+
+        return students;
     }
 
-    public List<Student> findByAgeLessThan(Integer age){ return studentRepository.findByAgeLessThan(age); }
+    public List<Student> findByAgeLessThan(Integer age){
+
+        List<Student> students = studentRepository.findByAgeLessThan(age);
+
+        if (students.size() == 0) {
+
+            throwExceptionDatabaseEmpty();
+        }
+
+        return students;
+    }
 
     public List<Optional<Student>> findTopByOrderByAgeAsc(){
-        return studentRepository.findTopByOrderByAgeAsc();
+
+        List<Optional<Student>> students = studentRepository.findTopByOrderByAgeAsc();
+
+        if (students.size() == 0) {
+
+            throwExceptionDatabaseEmpty();
+        }
+        return students;
     }
 
-    public List<Optional<Student>> findTopByOrderByAgeDesc(){ return studentRepository.findTopByOrderByAgeDesc(); }
+    public List<Optional<Student>> findTopByOrderByAgeDesc(){
+
+        List<Optional<Student>> students = studentRepository.findTopByOrderByAgeDesc();;
+
+        if (students.size() == 0) {
+
+            throwExceptionDatabaseEmpty();
+        }
+        return students;
+    }
 
     public List<String> getListOfStudentNameWithMaxBooks() {
-        Optional<List<String>> studentWithMaxBooks = studentRepository.selectStudentWithMaxBooks();
+        Optional<List<String>> studentWithMaxBooks = studentRepository.selectStudentsWithMaxBooks();
 
         if (studentWithMaxBooks.isEmpty()) {
 
-            throw new EmptyDatabaseExeception("No student with max books.");
+            throwExceptionDatabaseEmpty();
         }
         return studentWithMaxBooks.get();
     }
 
-    public Optional<List<Student>> findTop10ByOrderByAgeDesc(){ return studentRepository.findTop10ByOrderByAgeDesc(); }
+    public Optional<List<Student>> findTop10ByOrderByAgeDesc(){
 
-    public Optional<List<Student>> findTop10ByOrderByAgeAsc(){ return studentRepository.findTop10ByOrderByAgeAsc(); }
+        Optional<List<Student>> students = studentRepository.findTop10ByOrderByAgeDesc();
 
-    public List<Student> findByEmailLike(String likePattern){ return studentRepository.findByEmailLike(likePattern); }
+        if (students.get().size() == 0) {
+
+            throwExceptionDatabaseEmpty();
+        }
+        return students;
+        }
+
+    public Optional<List<Student>> findTop10ByOrderByAgeAsc(){
+
+        Optional<List<Student>> students = studentRepository.findTop10ByOrderByAgeAsc();
+
+        if (students.get().size() == 0) {
+
+            throwExceptionDatabaseEmpty();
+        }
+        return students;
+
+    }
+
+    public List<Student> findByEmailLike(String likePattern){
+
+        List<Student>students = studentRepository.findByEmailLike(likePattern);
+
+        if (students.size() == 0) {
+
+            throwExceptionDatabaseEmpty();
+        }
+        return students;
+    }
 
     public List<Student> findByFirstNameLikeAndSecondNameLike(String firstName, String secondName){
-        return studentRepository.findByFirstNameLikeAndSecondNameLike(firstName, secondName); }
+
+        List<Student>students = studentRepository.findByFirstNameLikeAndSecondNameLike(firstName, secondName);
+
+        if (students.size() == 0) {
+
+            studentNotFoundException();
+        }
+        return students;
+    }
 
     private Optional<Course> getCourseIfPresent(EnrollementInterface addEnrollementRequest) {
         // vf existenta cursului
@@ -93,10 +158,18 @@ public class StudentService {
         // vf existenta studentului
         Optional<Student> student = studentRepository.findById(addEnrollementRequest.getIdStudent().longValue());
         if (student.isEmpty()) {
-            throw new StudentNotPresentException("This student is not preset !");
+            studentNotFoundException();
         }
 
         return student;
+    }
+
+    private void studentNotFoundException() {
+        throw new StudentNotPresentException("This student is not preset !");
+    }
+
+    private void throwExceptionDatabaseEmpty() {
+        throw new EmptyDatabaseExeception("No student with max books.");
     }
 
 
@@ -121,12 +194,6 @@ public class StudentService {
         checkIfStudentAlreadyEnrolledAtTheCourse(course, student);
 
         this.addEnrolment(student, course);
-    }
-
-    private void checkIfStudentAlreadyEnrolledAtTheCourse(Course course, Student student) {
-        if( student.getEnrolledCourses().contains(course) ) {
-            throw new StudentAlreadyEnrolledException("This student is already enrolled to this course !");
-        }
     }
 
     @Transactional
@@ -155,6 +222,12 @@ public class StudentService {
 
         this.removeEnrolment(student, course);
         studentRepository.saveAndFlush(student);
+    }
+
+    private void checkIfStudentAlreadyEnrolledAtTheCourse(Course course, Student student) {
+        if( student.getEnrolledCourses().contains(course) ) {
+            throw new StudentAlreadyEnrolledException("This student is already enrolled to this course !");
+        }
     }
 
     private void checkIfStudentEnrolledAtTheCourse(Course course, Student student) {
