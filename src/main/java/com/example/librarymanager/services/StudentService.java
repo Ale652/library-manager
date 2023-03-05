@@ -178,10 +178,8 @@ public class StudentService {
     @Modifying
     public void addEnrolment(Student student, Course course){
 
-        if( ! student.getEnrolledCourses().contains(course)) {
             student.addCourse(course);
             studentRepository.saveAndFlush(student);
-        }
     }
 
     @Transactional
@@ -196,6 +194,7 @@ public class StudentService {
         this.addEnrolment(student, course);
     }
 
+
     @Transactional
     @Modifying
     public void removeStudent(Student student){
@@ -205,10 +204,8 @@ public class StudentService {
     @Transactional
     @Modifying
     public void removeEnrolment(Student student, Course course){
-        if(student.getEnrolledCourses().contains(course)) {
             student.removeCourse(course);
             studentRepository.saveAndFlush(student);
-        }
     }
 
     @Transactional
