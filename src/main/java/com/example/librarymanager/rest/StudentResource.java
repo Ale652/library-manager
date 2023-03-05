@@ -2,16 +2,17 @@ package com.example.librarymanager.rest;
 
 import com.example.librarymanager.dto.*;
 import com.example.librarymanager.services.StudentService;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/stundents")
+@Slf4j
 public class StudentResource {
 
     private StudentService studentService;
@@ -65,4 +66,21 @@ public class StudentResource {
         return  new ResponseEntity<>(studentsWithLowestAgeResponse, HttpStatus.OK);
     }
 
+    @PostMapping("/addEnrollment")
+    public ResponseEntity addEnrollment(@Valid @RequestBody AddEnrollementRequest addEnrollementRequest){
+
+        log.info("REST request to enroll {}",addEnrollementRequest);
+
+        studentService.addEnrolment(addEnrollementRequest);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @PostMapping("/removeEnrollment")
+    public ResponseEntity removeEnrollment(@Valid @RequestBody RemoveEnrollmentRequest removeEnrollmentRequest){
+
+        log.info("REST request to unenroll {}", removeEnrollmentRequest);
+
+        studentService.removeEnrolment(removeEnrollmentRequest);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
 }
