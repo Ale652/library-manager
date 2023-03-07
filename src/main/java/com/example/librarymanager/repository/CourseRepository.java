@@ -10,15 +10,23 @@ import java.util.Optional;
 
 public interface CourseRepository extends JpaRepository<Course, Long> {
 
+    Optional<List<Course>> findTop10ByOrderByNameAsc();
+
+    Optional<List<Course>> findTop10ByOrderByNameDesc();
+
+    Optional<List<Course>> findTop10ByOrderByDepartmentAsc();
+
+    Optional<List<Course>> findTop10ByOrderByDepartmentDesc();
+
+    Optional<List<Course>> findByNameLike(String course);
+
+    Optional<List<Course>> findByNameEquals(String course);
+
+    Optional<List<Course>>  findByDepartmentLike(String course);
+
+    Optional<List<Course>> findByDepartmentEquals(String course);
+
     @Query("select c from Course c order by c.department asc")
     Optional<List<Course>> getFirst10CoursesOrderByepartmentAsc(Pageable p);
 
-    Course findByNameLike(String course);
-
-    List<Course> findByDepartmentLike(String course);
-
-
-//    // get list of enrolments for a Course
-//    @Query("select c.enrolments from Course c where c.id = ?1")
-//    Optional<List<Enrolment>> getListOfEnrolmentsForACourse(Long course_id);
 }

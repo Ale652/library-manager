@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,23 +20,23 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     public List<Book> findByAuthorLike(String likePattern);
 
-    Optional<Book> findTopByOrderByPriceAsc();
+    Optional<List<Book>> findTopByOrderByPriceAsc();
 
-    Optional<Book> findTopByOrderByPriceDesc();
+    Optional<List<Book>> findTopByOrderByPriceDesc();
 
     public List<Book> findAllByOrderByPriceAsc();
 
     public List<Book> findAllByOrderByPriceDesc();
 
-    List<Book> findByPriceGreaterThanAndAuthorLike(Long price, String likePattern);
+   List<Book> findByPriceGreaterThanAndAuthorLike(Long price, String likePattern);
 
-//    @Query("select b from Book b order by b.price desc")
-//    Page<Book> findTop10PriceBooks(Pageable pageable);
+    public List<Book> findBookByCreatedAtGreaterThan(LocalDate date);
 
     @Query("select b from Book b order by b.price asc")
     Page<Book> findLower10PriceBooks(Pageable pageable);
 
     @Query("select b from Book b where b.stars = (select max(a.stars) from Book a)")
     Optional<List<Book>> bestBooks();
+
 
 }

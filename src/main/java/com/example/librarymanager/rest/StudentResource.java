@@ -41,7 +41,6 @@ public class StudentResource {
         return  new ResponseEntity<>(studentListWithMaxNrBooksResponse, HttpStatus.OK);
     }
 
-    //TODO : to test it
     @GetMapping("/listOfStudentsWithHighestAge")
     public ResponseEntity<StudentsWithHighestAgeResponse>listOfStudentsWithHighestAge(){
         StudentsWithHighestAgeResponse studentListWithHighestAgeResponse = StudentsWithHighestAgeResponse.builder()

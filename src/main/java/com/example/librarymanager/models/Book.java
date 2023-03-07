@@ -7,6 +7,8 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDate;
+
 @Table(name="book")
 @Entity(name="Book")
 @Getter
@@ -48,8 +50,8 @@ public class Book {
     @Column( name="stars")
     Long stars;
 
-    //TODO:
-    // created_at ??
+    @Column( name ="created_at")
+    LocalDate createdAt;
 
     @ManyToOne
     @JoinColumn(

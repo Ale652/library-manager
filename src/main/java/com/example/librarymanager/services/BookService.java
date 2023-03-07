@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,17 +65,15 @@ public class BookService {
                 return bookRepository.findByPriceGreaterThanAndAuthorLike( price, likePattern);
         }
 
-        public Optional<Book> findTopByOrderByPriceAsc(){
+        public List<Book> findBookByCreatedAtGreaterThan(LocalDate date){ return bookRepository.findBookByCreatedAtGreaterThan(date); }
+
+        public Optional<List<Book>> findTopByOrderByPriceAsc(){
                 return bookRepository.findTopByOrderByPriceAsc();
         }
 
-        public Optional<Book> findTopByOrderByPriceDesc(){
+        public Optional<List<Book>> findTopByOrderByPriceDesc(){
                 return bookRepository.findTopByOrderByPriceDesc();
         }
-
-//        public  Page<Book>  findTop10PriceBooks(){
-//                return bookRepository.findTop10PriceBooks(PageRequest.of(1,10));
-//        }
 
         public  Page<Book>  findLower10PriceBooks(){ return bookRepository.findLower10PriceBooks(PageRequest.of(1, 10));}
 
