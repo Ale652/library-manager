@@ -92,7 +92,7 @@ public class CourseResource {
 
         return new ResponseEntity<>(courseListResponse, HttpStatus.OK);
     }
-    
+
     @GetMapping("/listOfCoursesTop10ByOrderByDepartmentAsc")
     public ResponseEntity<CourseListResponse> listOfCoursesTop10ByOrderByDepartmentAsc(){
         CourseListResponse courseListResponse = CourseListResponse.builder()
