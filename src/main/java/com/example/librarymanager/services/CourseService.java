@@ -40,4 +40,6 @@ public class CourseService {
     public Optional<List<Course>> getTop10ByOrderByDepartmentDesc(){ return courseRepository.findTop10ByOrderByDepartmentDesc(); }
 
     public Optional<List<Course>> getCorusesByNameEquals(String course){ return courseRepository.findByNameEquals(course); }
+
+    public Optional<List<Course>> findAllByStudents_Email(String emailStudent){ return courseRepository.findAllByStudents_Email(emailStudent); }
 }

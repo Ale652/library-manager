@@ -81,4 +81,6 @@ public class BookService {
                 return bookRepository.bestBooks();
         }
 
+        public Optional<List<Book>> findAllByStudent_Email(String email){ return bookRepository.findAllByStudent_Email(email); }
+
 }

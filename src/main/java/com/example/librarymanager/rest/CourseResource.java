@@ -113,4 +113,14 @@ public class CourseResource {
         return new ResponseEntity<>(courseListResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/findAllByStudents_Email")
+    public ResponseEntity<CourseListResponse> findAllByStudents_Email(@RequestParam String emailStudent){
+        CourseListResponse courseListResponse = CourseListResponse.builder()
+                .courseList(courseService.findAllByStudents_Email(emailStudent).get())
+                .message("Get courses where student enrolled - using the email adress")
+                .build();
+
+        return new ResponseEntity<>(courseListResponse, HttpStatus.OK);
+    }
+
 }

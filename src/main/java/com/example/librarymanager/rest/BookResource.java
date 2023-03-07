@@ -3,6 +3,7 @@ package com.example.librarymanager.rest;
 import com.example.librarymanager.dto.BookListResponse;
 import com.example.librarymanager.dto.StudentListResponse;
 import com.example.librarymanager.models.Book;
+import com.example.librarymanager.models.Student;
 import com.example.librarymanager.services.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -127,6 +128,16 @@ public class BookResource {
                 .build();
 
         return new ResponseEntity<>(bestBooks, HttpStatus.OK);
+    }
+
+    @GetMapping("/findAllByStudent")
+    public ResponseEntity<BookListResponse> findAllByStudent(@RequestParam String student_email ){
+        BookListResponse bookListResponse = BookListResponse.builder()
+                .bookList(bookService.findAllByStudent_Email(student_email).get())
+                .message("Get all books of a student.")
+                .build();
+
+        return new ResponseEntity<>(bookListResponse, HttpStatus.OK);
     }
 
 }

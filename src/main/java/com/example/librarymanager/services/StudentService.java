@@ -164,6 +164,10 @@ public class StudentService {
         return student;
     }
 
+    public Optional<List<Student>> findAllByBooks_TitleLike(String title){ return studentRepository.findAllByBooks_TitleLike(title); }
+
+    public Optional<List<Student>> findAllByEnrolledCourses_NameLike(String courseName){ return studentRepository.findAllByEnrolledCourses_NameLike(courseName); }
+
     private void studentNotFoundException() {
         throw new StudentNotPresentException("This student is not preset !");
     }
