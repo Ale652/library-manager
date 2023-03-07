@@ -7,10 +7,10 @@ import com.example.librarymanager.repository.CourseRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CourseService {
-    //TODO: General : getAllBooks, getBooksByAuthor, getAllStudentsThatHaveBook-X (needModifyQuantityForBookInModel)..
 
     CourseRepository courseRepository;
 
@@ -27,8 +27,17 @@ public class CourseService {
         return  courses;
     }
 
-    public Course getCourseByNameLike(String course){ return courseRepository.findByNameLike(course); }
+    public Optional<List<Course>> getCoursesByNameLike(String course){ return courseRepository.findByNameLike(course); }
 
-    public  List<Course> findByDepartmentLike(String department){ return courseRepository.findByDepartmentLike(department); }
+    public Optional<List<Course>>  getCoursesByDepartmentLike(String department){ return courseRepository.findByDepartmentLike(department); }
 
+    public Optional<List<Course>> getTop10ByOrderByNameAsc(){ return courseRepository.findTop10ByOrderByNameAsc(); }
+
+    public Optional<List<Course>> getTop10ByOrderByNameDesc(){ return courseRepository.findTop10ByOrderByNameDesc(); }
+
+    public Optional<List<Course>> getTop10ByOrderByDepartmentAsc(){ return courseRepository.findTop10ByOrderByDepartmentAsc(); }
+
+    public Optional<List<Course>> getTop10ByOrderByDepartmentDesc(){ return courseRepository.findTop10ByOrderByDepartmentDesc(); }
+
+    public Optional<List<Course>> getCorusesByNameEquals(String course){ return courseRepository.findByNameEquals(course); }
 }
