@@ -24,6 +24,8 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
     Optional<List<Course>>  findByDepartmentLike(String course);
 
+    Optional<List<Course>> findAllByStudents_Email(String emailStudent);
+
     Optional<List<Course>> findByDepartmentEquals(String course);
 
     @Query("select c from Course c order by c.department asc")

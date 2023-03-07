@@ -28,6 +28,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     public List<Book> findAllByOrderByPriceDesc();
 
+    Optional<List<Book>> findAllByStudent_Email(String student_email);
+
    List<Book> findByPriceGreaterThanAndAuthorLike(Long price, String likePattern);
 
     public List<Book> findBookByCreatedAtGreaterThan(LocalDate date);

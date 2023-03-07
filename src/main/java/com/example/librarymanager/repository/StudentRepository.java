@@ -23,6 +23,10 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     List<Student> findByEmailLike(String likePattern);
 
+    Optional<List<Student>> findAllByBooks_TitleLike(String title);
+
+    Optional<List<Student>> findAllByEnrolledCourses_NameLike(String courseName);
+
     List<Student> findByFirstNameLikeAndSecondNameLike(String firstName, String secondName);
 
     @Query(value = "select first_name ,count(*) as number from student " +
