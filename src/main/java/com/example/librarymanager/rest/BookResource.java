@@ -2,20 +2,20 @@ package com.example.librarymanager.rest;
 
 import com.example.librarymanager.dto.BookListResponse;
 import com.example.librarymanager.dto.StudentListResponse;
+import com.example.librarymanager.dto.createEntities.CreateBookInDBRequest;
 import com.example.librarymanager.models.Book;
 import com.example.librarymanager.models.Student;
 import com.example.librarymanager.services.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("api/v1/books")
@@ -140,4 +140,22 @@ public class BookResource {
         return new ResponseEntity<>(bookListResponse, HttpStatus.OK);
     }
 
+    @PostMapping("/createBookInDB")
+    public ResponseEntity<Book> createBookInDB(@RequestBody CreateBookInDBRequest createBookInDBRequest){
+        Book book = Book.builder()
+                .id(createBookInDBRequest.getId())
+                .title(createBookInDBRequest.getTitle())
+                .author(createBookInDBRequest.getAuthor())
+                .price(createBookInDBRequest.getPrice())
+                .stars(createBookInDBRequest.getStars())
+                .createdAt(createBookInDBRequest.getCreatedAt())
+                .build();
+
+        BookListResponse bookListResponse = BookListResponse.builder()
+                .bookList(Stream.of(bookService.createBookInDB(book)).collect(Collectors.toList()))
+                .message("A new book created")
+                .build();
+
+                return new ResponseEntity(bookListResponse, HttpStatus.OK);
+    }
 }

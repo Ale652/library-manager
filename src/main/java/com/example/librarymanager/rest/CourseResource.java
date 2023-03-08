@@ -1,6 +1,7 @@
 package com.example.librarymanager.rest;
 
 import com.example.librarymanager.dto.CourseListResponse;
+import com.example.librarymanager.dto.createEntities.CreateCourseInDBRequest;
 import com.example.librarymanager.exceptions.TooManyCoursesReturnedException;
 import com.example.librarymanager.models.Book;
 import com.example.librarymanager.models.Course;
@@ -14,6 +15,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("api/v1/courses")
@@ -123,4 +126,21 @@ public class CourseResource {
         return new ResponseEntity<>(courseListResponse, HttpStatus.OK);
     }
 
+    //TODO : is not working
+    @PostMapping("/createCourseInDB")
+    public ResponseEntity<CourseListResponse> createCourseInDB(@RequestBody CreateCourseInDBRequest
+                                                                           createCourseInDBRequest){
+        Course course = Course.builder()
+                .id(createCourseInDBRequest.getId())
+                .name(createCourseInDBRequest.getName())
+                .department(createCourseInDBRequest.getDepartment())
+                .build();
+
+        CourseListResponse courseListResponse = CourseListResponse.builder()
+                .courseList(Stream.of(courseService.createCourseInDB(course)).collect(Collectors.toList()))
+                .message("A new course created")
+                .build();
+
+        return new ResponseEntity(courseListResponse, HttpStatus.OK);
+    }
 }

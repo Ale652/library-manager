@@ -42,4 +42,9 @@ public class CourseService {
     public Optional<List<Course>> getCorusesByNameEquals(String course){ return courseRepository.findByNameEquals(course); }
 
     public Optional<List<Course>> findAllByStudents_Email(String emailStudent){ return courseRepository.findAllByStudents_Email(emailStudent); }
+
+    public Course createCourseInDB(Course course){
+        courseRepository.saveAndFlush(course);
+        return course;
+    }
 }
