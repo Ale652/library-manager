@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("api/v1/stundents")
@@ -169,5 +170,23 @@ public class StudentResource {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    @PostMapping("/addBookToStudent")
+    public ResponseEntity addBookToStudent(@RequestBody AddBookToStudentRequest addBookToStudentRequest){
+        BookListResponse bookListResponse = BookListResponse.builder()
+                .bookList(Stream.of(studentService.addBookToStudent(addBookToStudentRequest)).collect(Collectors.toList()))
+                .message("Added book to Student")
+                .build();
 
+        return new ResponseEntity(bookListResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/removeBookFromStudent")
+    public ResponseEntity removeBookFromStudent(@RequestBody RemoveBookFromStudentRequest removeBookFromStudentRequest){
+        BookListResponse bookListResponse = BookListResponse.builder()
+                .bookList(Stream.of(studentService.removeBookFromStudent(removeBookFromStudentRequest)).collect(Collectors.toList()))
+                .message("Removed book from Student")
+                .build();
+
+        return new ResponseEntity(bookListResponse, HttpStatus.OK);
+    }
 }

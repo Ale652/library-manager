@@ -83,4 +83,9 @@ public class BookService {
 
         public Optional<List<Book>> findAllByStudent_Email(String email){ return bookRepository.findAllByStudent_Email(email); }
 
+        public Book createBookInDB(Book book){
+                bookRepository.saveAndFlush(book);
+                return book;
+        }
+
 }

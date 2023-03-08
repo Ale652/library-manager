@@ -22,7 +22,6 @@ import java.util.List;
 @NoArgsConstructor
 @SuperBuilder
 public class Course {
-
     @Id
     @SequenceGenerator(
             name="course_sequence",
@@ -49,6 +48,11 @@ public class Course {
     )
     @JsonBackReference
     List<Student> students  = new ArrayList<>();
+
+    public Course(String name, String department) {
+        this.name = name;
+        this.department = department;
+    }
 
     @Override
     public boolean equals(Object obj){

@@ -1,18 +1,20 @@
 package com.example.librarymanager.services;
 
+import com.example.librarymanager.dto.AddBookToStudentRequest;
 import com.example.librarymanager.dto.AddEnrollementRequest;
 import com.example.librarymanager.dto.EnrollementInterface;
-import com.example.librarymanager.exceptions.CourseNotPresentException;
-import com.example.librarymanager.exceptions.EmptyDatabaseExeception;
-import com.example.librarymanager.exceptions.StudentAlreadyEnrolledException;
-import com.example.librarymanager.exceptions.StudentNotPresentException;
+import com.example.librarymanager.dto.RemoveBookFromStudentRequest;
+import com.example.librarymanager.exceptions.*;
+import com.example.librarymanager.models.Book;
 import com.example.librarymanager.models.Course;
 import com.example.librarymanager.models.Student;
+import com.example.librarymanager.repository.BookRepository;
 import com.example.librarymanager.repository.CourseRepository;
 import com.example.librarymanager.repository.StudentRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,9 +26,13 @@ public class StudentService {
 
     private CourseRepository courseRepository;
 
-    public StudentService(StudentRepository studentRepository, CourseRepository courseRepository) {
+    private BookRepository bookRepository;
+
+    public StudentService(StudentRepository studentRepository, CourseRepository courseRepository,
+                          BookRepository bookRepository) {
         this.studentRepository = studentRepository;
         this.courseRepository = courseRepository;
+        this.bookRepository = bookRepository;
     }
 
     public List<Student> getAllStudents() {
@@ -148,20 +154,30 @@ public class StudentService {
         Optional<Course> course = courseRepository.findById(addEnrollementRequest.getIdCourse().longValue());
 
         if (course.isEmpty()) {
-            throw new CourseNotPresentException("This ocurse is not present !");
+            throw new CourseNotPresentException("This course is not present !");
         }
 
         return course;
     }
 
-    private Optional<Student> getStudentIfPresent(EnrollementInterface addEnrollementRequest) {
+    private Optional<Student> getStudentIfPresent(Long student_id) {
         // vf existenta studentului
-        Optional<Student> student = studentRepository.findById(addEnrollementRequest.getIdStudent().longValue());
+        Optional<Student> student = studentRepository.findById(student_id);
         if (student.isEmpty()) {
             studentNotFoundException();
         }
 
         return student;
+    }
+
+    private Optional<Book> getBookIfPresent(Long book_id){
+        Optional<Book> book =  bookRepository.findById(book_id);
+
+        if(book.isEmpty()){
+            throw new BookNotPresentException("This book is not present !");
+        }
+
+        return book;
     }
 
     public Optional<List<Student>> findAllByBooks_TitleLike(String title){ return studentRepository.findAllByBooks_TitleLike(title); }
@@ -176,8 +192,6 @@ public class StudentService {
         throw new EmptyDatabaseExeception("No student with max books.");
     }
 
-
-    // Enrollmentn\UnEnrollment
     @Transactional
     @Modifying
     public void addEnrolment(Student student, Course course){
@@ -191,13 +205,12 @@ public class StudentService {
     public void addEnrolment(AddEnrollementRequest addEnrollementRequest) {
 
         Course course = getCourseIfPresent(addEnrollementRequest).get();
-        Student student = getStudentIfPresent(addEnrollementRequest).get();
+        Student student = getStudentIfPresent(addEnrollementRequest.getIdStudent().longValue()).get();
 
         checkIfStudentAlreadyEnrolledAtTheCourse(course, student);
 
         this.addEnrolment(student, course);
     }
-
 
     @Transactional
     @Modifying
@@ -217,12 +230,38 @@ public class StudentService {
     public void removeEnrolment(EnrollementInterface removeEnrollmentRequest){
 
         Course course = getCourseIfPresent(removeEnrollmentRequest).get();
-        Student student = getStudentIfPresent(removeEnrollmentRequest).get();
+        Student student = getStudentIfPresent(removeEnrollmentRequest.getIdStudent().longValue()).get();
 
         checkIfStudentEnrolledAtTheCourse(course, student);
 
         this.removeEnrolment(student, course);
         studentRepository.saveAndFlush(student);
+    }
+
+    @Transactional
+    @Modifying
+    public Book addBookToStudent(AddBookToStudentRequest addBookToStudentRequest){
+
+        Long book_id = addBookToStudentRequest.getIdBook().longValue();
+        Long student_id = addBookToStudentRequest.getIdStudent().longValue();
+        Student student = getStudentIfPresent(student_id).get();
+        Book book = getBookIfPresent(book_id).get();
+        //TODO: check if it is ok - logically :
+        checkIfBookAllreadyAddedToAStudent(book_id);
+        studentRepository.addBookToStudent(student, book_id);
+        return book;
+    }
+
+    @Transactional
+    @Modifying
+    public Book removeBookFromStudent(RemoveBookFromStudentRequest removeBookFromStudentRequest){
+        Long book_id = removeBookFromStudentRequest.getIdBook().longValue();
+        Long student_id = removeBookFromStudentRequest.getIdStudent().longValue();
+        Student student = getStudentIfPresent(student_id).get();
+        Book book = getBookIfPresent(book_id).get();
+        checkIfBookAlreadyAssignedToStudent(book_id, student);
+        studentRepository.removeBookFromStudent(book_id);
+        return book;
     }
 
     private void checkIfStudentAlreadyEnrolledAtTheCourse(Course course, Student student) {
@@ -238,15 +277,22 @@ public class StudentService {
         }
     }
 
-    //TODO : addBook\removeBook
-    // Quetion ? Between book and student why to do not do many to many =>
-    // many students to have many books
-    // many books to be used by many students
-    // This limitation do not permit to have a book for many students
-    // => a book may be used by many studenst, because there are n instances of this book in that library
-    // why not keep an history on what a student have had ever as books used
+    private void checkIfBookAllreadyAddedToAStudent(Long id_book){
+        Optional<Student> student = studentRepository.checkIfBookAllreadyAddedToAStudent(id_book);
 
+        if(! student.isEmpty()){
+            throw new StudentNotPresentException("The book is already assigned to a student !");
+        }
+    }
 
+    private void checkIfBookAlreadyAssignedToStudent(Long id_book, Student student){
+        Optional<Student> studentDB = studentRepository.checkIfBookAllreadyAddedToAStudent(id_book);
 
+        if(! student.equals(studentDB.get())){
+            throw new BookNotPresentException("The book is assigned to antoher student.");
+        }
+        else if(studentDB.isEmpty())
+            throw new BookNotPresentException("No student has this book assigned.");
+    }
 }
 

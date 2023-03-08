@@ -1,8 +1,11 @@
 package com.example.librarymanager.repository;
 
+import com.example.librarymanager.models.Book;
 import com.example.librarymanager.models.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,4 +38,16 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
             , nativeQuery = true)
     Optional<List<String>> selectStudentsWithMaxBooks();
 
+    @Modifying
+    @Query(value = "update Book b set b.student = :student where b.id = :id_book")
+    void addBookToStudent(Student student, Long id_book);
+
+    @Modifying
+    @Query(value = "update Book b set b.student = null where b.id = :id_book")
+    void removeBookFromStudent(Long id_book);
+
+    @Query(value = "select b.student from Book b where b.id = :id_book")
+    Optional<Student> checkIfBookAllreadyAddedToAStudent(Long id_book);
+
 }
+

@@ -8,6 +8,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Table(name="book")
 @Entity(name="Book")
@@ -63,6 +64,26 @@ public class Book {
     @JsonBackReference
     private Student student;
 
+    public Book(String title, String author, double price, Long stars, LocalDate createdAt) {
+        this.title = title;
+        this.author = author;
+        this.price = price;
+        this.stars = stars;
+        this.createdAt = createdAt;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return Double.compare(book.price, price) == 0 && Objects.equals(id, book.id) && Objects.equals(title, book.title) && Objects.equals(author, book.author) && Objects.equals(stars, book.stars) && Objects.equals(createdAt, book.createdAt) && Objects.equals(student, book.student);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, author, price, stars, createdAt, student);
+    }
     @Override
     public String toString() {
         return "Book{" +
