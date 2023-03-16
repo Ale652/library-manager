@@ -1,6 +1,7 @@
 package com.example.librarymanager.rest;
 
 import com.example.librarymanager.dto.BookListResponse;
+import com.example.librarymanager.dto.RemoveBookFromDBRequest;
 import com.example.librarymanager.dto.StudentListResponse;
 import com.example.librarymanager.dto.createEntities.CreateBookInDBRequest;
 import com.example.librarymanager.models.Book;
@@ -41,6 +42,17 @@ public class BookResource {
         BookListResponse bookListResponse = BookListResponse.builder()
                 .bookList(bookService.getAllBooksInAscendingOrderByPrice())
                 .message("All books in ascending order by price")
+                .build();
+
+        return new ResponseEntity<>(bookListResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/booksListInDescendingOrderByPrice")
+    public ResponseEntity<BookListResponse> getAllBooksInDescendingOrderByPrice(){
+
+        BookListResponse bookListResponse = BookListResponse.builder()
+                .bookList(bookService.getAllBooksInDescendingOrderByPrice())
+                .message("All books in descending order by price")
                 .build();
 
         return new ResponseEntity<>(bookListResponse, HttpStatus.OK);
@@ -152,10 +164,22 @@ public class BookResource {
                 .build();
 
         BookListResponse bookListResponse = BookListResponse.builder()
-                .bookList(Stream.of(bookService.createBookInDB(book)).collect(Collectors.toList()))
+                .bookList(Stream.of(bookService.createBookInDB(book))
+                .collect(Collectors.toList()))
                 .message("A new book created")
                 .build();
 
                 return new ResponseEntity(bookListResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/removeBookFromDB")
+    public ResponseEntity<BookListResponse> removeBookFromDB(@RequestBody RemoveBookFromDBRequest removeBookFromDBRequest){
+        BookListResponse bookListResponse = BookListResponse.builder()
+                .bookList(Stream.of(bookService.removeBookFromDB(removeBookFromDBRequest.getId()))
+                        .toList())
+                .message("Book removed from DB")
+                .build();
+
+        return new ResponseEntity<>(bookListResponse, HttpStatus.OK);
     }
 }

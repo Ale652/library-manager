@@ -57,7 +57,7 @@ public class Course {
     @Override
     public boolean equals(Object obj){
 
-        return  this.getId()==((Course)obj).getId();
+        return  this.getName()==((Course)obj).getName() && this.getDepartment()==((Course)obj).getDepartment() ;
     }
 
     @Override
