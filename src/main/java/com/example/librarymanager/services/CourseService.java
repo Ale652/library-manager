@@ -4,6 +4,8 @@ import com.example.librarymanager.exceptions.EmptyDatabaseExeception;
 import com.example.librarymanager.models.Book;
 import com.example.librarymanager.models.Course;
 import com.example.librarymanager.repository.CourseRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,8 +45,22 @@ public class CourseService {
 
     public Optional<List<Course>> findAllByStudents_Email(String emailStudent){ return courseRepository.findAllByStudents_Email(emailStudent); }
 
+    public Optional<List<Course>> findByDepartmentEquals(String course){ return courseRepository.findByDepartmentEquals(course); }
+
     public Course createCourseInDB(Course course){
         courseRepository.saveAndFlush(course);
         return course;
     }
+
+    public Course removeCourseInDB(Long id){
+        Course course = courseRepository.findById(id).get();
+        courseRepository.deleteById(id);
+        return course;
+    }
+
+    public Optional<List<Course>> getMostPopularCourse(){
+        return courseRepository.getMostPopularCourse();
+    }
+
+    public Page<Course> getMostPopular3Courses(){ return courseRepository.getMostPopularCourses(PageRequest.of(1, 3));}
 }

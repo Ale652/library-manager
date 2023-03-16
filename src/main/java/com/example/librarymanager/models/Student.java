@@ -59,7 +59,7 @@ public class Student {
     List<Book> books= new ArrayList<>();
 
     @ManyToMany(
-            cascade = CascadeType.ALL,
+            cascade = CascadeType.MERGE ,
             fetch = FetchType.EAGER
     )
     @JoinTable(name = "enrolment",

@@ -107,8 +107,8 @@ public class LibraryManagerApplication {
 
 
             // Remove Enrolment
-            Course course = courseRepository.findById(1L).get();
-            Student stuent = studentRepository.findById(1L).get();
+//            Course course = courseRepository.findById(1L).get();
+//            Student stuent = studentRepository.findById(1L).get();
 
 //            studentService.removeEnrolment(stuent, course);
 

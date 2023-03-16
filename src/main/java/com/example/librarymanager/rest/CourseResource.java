@@ -1,6 +1,7 @@
 package com.example.librarymanager.rest;
 
 import com.example.librarymanager.dto.CourseListResponse;
+import com.example.librarymanager.dto.RemoveCourseFromDBRequest;
 import com.example.librarymanager.dto.createEntities.CreateCourseInDBRequest;
 import com.example.librarymanager.exceptions.TooManyCoursesReturnedException;
 import com.example.librarymanager.models.Book;
@@ -126,10 +127,18 @@ public class CourseResource {
         return new ResponseEntity<>(courseListResponse, HttpStatus.OK);
     }
 
-    //TODO : is not working
+    @GetMapping("/findByDepartmentEquals")
+    public ResponseEntity<CourseListResponse> findByDepartmentEquals(@RequestParam String courseName){
+        CourseListResponse courseListResponse = CourseListResponse.builder()
+                .courseList(courseService.findByDepartmentEquals(courseName).get())
+                .message("Get courses by department name " + courseName)
+                .build();
+
+        return new ResponseEntity<>(courseListResponse, HttpStatus.OK);
+    }
+
     @PostMapping("/createCourseInDB")
-    public ResponseEntity<CourseListResponse> createCourseInDB(@RequestBody CreateCourseInDBRequest
-                                                                           createCourseInDBRequest){
+    public ResponseEntity<CourseListResponse> createCourseInDB(@RequestBody CreateCourseInDBRequest createCourseInDBRequest){
         Course course = Course.builder()
                 .id(createCourseInDBRequest.getId())
                 .name(createCourseInDBRequest.getName())
@@ -142,5 +151,37 @@ public class CourseResource {
                 .build();
 
         return new ResponseEntity(courseListResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/removeCourseInDB")
+    public ResponseEntity<CourseListResponse> removeCourseInDB(@RequestBody RemoveCourseFromDBRequest removeCourseFromDBRequest){
+        Long courseId = removeCourseFromDBRequest.getId();
+
+        CourseListResponse courseListResponse = CourseListResponse.builder()
+                .courseList(Stream.of(courseService.removeCourseInDB(courseId)).toList())
+                .message("Course removed "+courseId+"from DB")
+                .build();
+
+        return new ResponseEntity<>(courseListResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/getMostPopularCourse")
+    public ResponseEntity<CourseListResponse> getMostPopularCourse(){
+        CourseListResponse courseListResponse = CourseListResponse.builder()
+                .courseList(courseService.getMostPopularCourse().get())
+                .message("Get most popular course")
+                .build();
+
+        return  new ResponseEntity<>(courseListResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/findMostPopular3Courses")
+    public ResponseEntity<CourseListResponse> findMostPopular3Courses(){
+        CourseListResponse courseListResponse = CourseListResponse.builder()
+                .courseList(courseService.getMostPopular3Courses().stream().toList())
+                .message("Get most 3 popular courses.")
+                .build();
+
+        return new ResponseEntity<>(courseListResponse, HttpStatus.OK);
     }
 }

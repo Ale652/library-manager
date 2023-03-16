@@ -45,6 +45,17 @@ public class BookService {
                 return  books;
         }
 
+        public List<Book> getAllBooksInDescendingOrderByPrice(){
+                List<Book> books = bookRepository.findAllByOrderByPriceDesc();
+
+                if(books.size()==0){
+
+                        throw  new EmptyDatabaseExeception("Dtabase empty ");
+                }
+
+                return  books;
+        }
+
         public List<Book> getAllBooksInDescendingOrderByStars(){
 
                 List<Book> books = bookRepository.findAllByOrderByStarsDesc();
@@ -85,6 +96,12 @@ public class BookService {
 
         public Book createBookInDB(Book book){
                 bookRepository.saveAndFlush(book);
+                return book;
+        }
+
+        public Book removeBookFromDB(Long id){
+                Book book = bookRepository.findById(id).get();
+                bookRepository.deleteById(id);
                 return book;
         }
 
